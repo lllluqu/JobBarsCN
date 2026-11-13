@@ -12,7 +12,7 @@ namespace JobBars.Data {
             foreach( var entry in JobToValue ) {
                 if( entry.Key == JobIds.OTHER ) continue;
 
-                var rowId = UiHelper.Localize( entry.Key ) + Id;
+                var rowId = UiHelper.JobDisplay( entry.Key ) + Id;
                 if( ImGui.CollapsingHeader( rowId ) ) {
                     ImGui.Indent();
 
@@ -35,7 +35,7 @@ namespace JobBars.Data {
 
         protected override void DrawRightColumn() {
             if( SettingsItemSelected == null ) {
-                ImGui.Text( "Select an item..." );
+                ImGui.Text( Loc.T( "Select an item..." ) );
             }
             else {
                 ImGui.BeginChild( Id + "Selected" );

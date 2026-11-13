@@ -27,10 +27,7 @@ namespace JobBars {
         public JobBars( IDalamudPluginInterface pluginInterface ) {
             pluginInterface.Create<Dalamud>();
 
-            KamiToolKitLibrary.Initialize( pluginInterface, "JobBars" );
-
-            UiHelper.Setup();
-            ColorConstants.SetupColors();
+            KamiToolKitLibrary.Initialize( pluginInterface, "JobBarsCN" );
 
             try {
                 Configuration = Dalamud.PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
@@ -45,6 +42,11 @@ namespace JobBars {
                 Configuration = new Configuration();
                 Configuration.Save();
             }
+
+            Loc.Initialize( Configuration.Language );
+
+            UiHelper.Setup();
+            ColorConstants.SetupColors();
 
             ReceiveActionEffectHook = Dalamud.Hooks.HookFromSignature<ReceiveActionEffectDelegate>( Constants.ReceiveActionEffectSig, ReceiveActionEffect );
             ActorControlSelfHook = Dalamud.Hooks.HookFromSignature<ActorControlSelfDelegate>( Constants.ActorControlSig, ActorControlSelf );
@@ -151,7 +153,7 @@ namespace JobBars {
 
         private void SetupCommands() {
             Dalamud.CommandManager.AddHandler( "/jobbars", new CommandInfo( OnCommand ) {
-                HelpMessage = $"Open config window for VFXEditor",
+                HelpMessage = Loc.T( "Open config window for JobBars." ),
                 ShowInHelp = true
             } );
         }

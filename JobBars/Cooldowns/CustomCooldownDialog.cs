@@ -8,7 +8,10 @@ using System.Numerics;
 namespace JobBars.Cooldowns {
     public class CustomCooldownDialog : GenericDialog {
         private enum CustomCooldownType {
+            [System.ComponentModel.Description( "Buff" )]
             Buff,
+
+            [System.ComponentModel.Description( "Action" )]
             Action
         }
 
@@ -31,25 +34,25 @@ namespace JobBars.Cooldowns {
 
             ImGui.BeginChild( id + "/Child", new Vector2( 0, -footerHeight ), true );
 
-            if( JobBars.DrawCombo( JobOptions, SelectedJob, "Job", id, out var newSelectedJob ) ) {
+            if( JobBars.DrawCombo( JobOptions, SelectedJob, Loc.T( "Job" ), id, out var newSelectedJob ) ) {
                 SelectedJob = newSelectedJob;
             }
 
-            if( ImGui.BeginCombo( "##CustomCD_Type", $"{CustomTriggerType}", ImGuiComboFlags.HeightLargest ) ) {
-                if( ImGui.Selectable( "Action", CustomTriggerType == CustomCooldownType.Action ) ) CustomTriggerType = CustomCooldownType.Action;
-                if( ImGui.Selectable( "Buff", CustomTriggerType == CustomCooldownType.Buff ) ) CustomTriggerType = CustomCooldownType.Buff;
+            if( ImGui.BeginCombo( "##CustomCD_Type", Loc.Display( CustomTriggerType ), ImGuiComboFlags.HeightLargest ) ) {
+                if( ImGui.Selectable( Loc.T( "Action" ), CustomTriggerType == CustomCooldownType.Action ) ) CustomTriggerType = CustomCooldownType.Action;
+                if( ImGui.Selectable( Loc.T( "Buff" ), CustomTriggerType == CustomCooldownType.Buff ) ) CustomTriggerType = CustomCooldownType.Buff;
                 ImGui.EndCombo();
             }
             ImGui.SameLine();
-            ImGui.Text( "Trigger Type" );
+            ImGui.Text( Loc.T( "Trigger Type" ) );
 
             if( CustomTriggerType == CustomCooldownType.Action ) CustomTriggerAction.Draw();
             else CustomTriggerBuff.Draw();
 
             CustomIcon.Draw();
 
-            ImGui.InputFloat( $"Cooldown", ref CustomCD );
-            ImGui.InputFloat( $"Duration (0 = instant)", ref CustomDuration );
+            ImGui.InputFloat( Loc.T( "Cooldown" ), ref CustomCD );
+            ImGui.InputFloat( Loc.T( "Duration (0 = instant)" ), ref CustomDuration );
 
             var selected = CustomTriggerType == CustomCooldownType.Action ? CustomTriggerAction.GetSelected() : CustomTriggerBuff.GetSelected();
             var icon = CustomIcon.GetSelected();
@@ -57,8 +60,8 @@ namespace JobBars.Cooldowns {
             ImGui.EndChild();
 
             if( icon.Data.Id != 0 && selected.Data.Id != 0 ) {
-                if( ImGui.Button( "+ Add" ) ) {
-                    var newName = $"{selected.Name} - Custom ({UiHelper.Localize( SelectedJob )})";
+                if( ImGui.Button( Loc.T( "+ Add" ) ) ) {
+                    var newName = $"{selected.Name} - {UiHelper.Localize( SelectedJob )}";
                     var newProps = new CooldownProps {
                         CD = CustomCD,
                         Duration = CustomDuration,
@@ -71,7 +74,7 @@ namespace JobBars.Cooldowns {
             }
             else {
                 ImGui.PushStyleVar( ImGuiStyleVar.Alpha, 0.5f );
-                ImGui.Button( "+ Add" );
+                ImGui.Button( Loc.T( "+ Add" ) );
                 ImGui.PopStyleVar();
             }
         }

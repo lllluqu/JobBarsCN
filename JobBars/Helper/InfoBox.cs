@@ -107,12 +107,13 @@ namespace JobBars {
             DrawList.AddLine( new Vector2( StartPosition.X + Size.X - 0.5f, StartPosition.Y + CurveRadius - 0.5f ), new Vector2( StartPosition.X + Size.X - 0.5f, StartPosition.Y + Size.Y - CurveRadius + 0.5f ), color, BorderThickness );
             DrawList.AddLine( new Vector2( StartPosition.X + CurveRadius - 0.5f, StartPosition.Y + Size.Y - 0.5f ), new Vector2( StartPosition.X + Size.X - CurveRadius + 0.5f, StartPosition.Y + Size.Y - 0.5f ), color, BorderThickness );
 
-            var textSize = ImGui.CalcTextSize( Label );
+            var label = Loc.T( Label );
+            var textSize = ImGui.CalcTextSize( label );
             var textStartPadding = 7.0f * ImGuiHelpers.GlobalScale;
             var textEndPadding = 7.0f * ImGuiHelpers.GlobalScale;
             var textVerticalOffset = textSize.Y / 2.0f;
 
-            DrawList.AddText( new Vector2( StartPosition.X + CurveRadius + textStartPadding, StartPosition.Y - textVerticalOffset ), TextColorU32, Label );
+            DrawList.AddText( new Vector2( StartPosition.X + CurveRadius + textStartPadding, StartPosition.Y - textVerticalOffset ), TextColorU32, label );
             DrawList.AddLine( new Vector2( StartPosition.X + CurveRadius + textStartPadding + textSize.X + textEndPadding, StartPosition.Y - 0.5f ), new Vector2( StartPosition.X + Size.X - CurveRadius + 0.5f, StartPosition.Y - 0.5f ), color, BorderThickness );
         }
 

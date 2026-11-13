@@ -1,6 +1,7 @@
 using Dalamud.Configuration;
 using Dalamud.Bindings.ImGui;
 using JobBars.Atk;
+using System.ComponentModel;
 using JobBars.Cooldowns;
 using JobBars.Cursors;
 using JobBars.Gauges;
@@ -13,14 +14,24 @@ using static JobBars.Icons.IconReplacer;
 
 namespace JobBars.Data {
     public enum GaugePositionType {
+        [Description( "Global" )]
         Global,
+
+        [Description( "Per Job" )]
         PerJob,
+
+        [Description( "Split" )]
         Split
     }
 
     public enum CursorPositionType {
+        [Description( "Mouse Cursor" )]
         MouseCursor,
+
+        [Description( "Screen Center" )]
         Middle,
+
+        [Description( "Custom Position" )]
         CustomPosition
     }
 
@@ -36,6 +47,8 @@ namespace JobBars.Data {
     [Serializable]
     public class Configuration : IPluginConfiguration {
         public int Version { get; set; } = 2;
+
+        public PluginLanguage Language { get; set; } = PluginLanguage.Auto;
 
         // ====== GAUGES ======
 
@@ -189,9 +202,9 @@ namespace JobBars.Data {
 
         public static bool DrawColor( string id, ElementColor currentValue, out ElementColor value ) {
             value = currentValue;
-            if( ImGui.BeginCombo( id, value.Name ) ) {
+            if( ImGui.BeginCombo( id, Loc.T( value.Name ) ) ) {
                 foreach( var entry in ColorConstants.AllColors ) {
-                    if( ImGui.Selectable( $"{entry.Key}##Combo", value.Name == entry.Key ) ) {
+                    if( ImGui.Selectable( Loc.T( entry.Key ) + "##Combo", value.Name == entry.Key ) ) {
                         value = entry.Value;
                         ImGui.EndCombo();
                         return true;

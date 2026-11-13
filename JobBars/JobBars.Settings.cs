@@ -14,34 +14,47 @@ namespace JobBars {
 
             var _ID = "##JobBars_Settings";
             ImGui.SetNextWindowSize( new Vector2( 600, 1000 ), ImGuiCond.FirstUseEver );
-            if( ImGui.Begin( "JobBars Settings", ref Visible ) ) {
+            if( ImGui.Begin( Loc.T( "JobBars Settings" ), ref Visible ) ) {
                 ImGui.BeginTabBar( "Tabs" + _ID );
-                if( ImGui.BeginTabItem( "Gauges" + _ID ) ) {
+                if( ImGui.BeginTabItem( Loc.T( "Gauges" ) + _ID ) ) {
                     GaugeManager?.Draw();
                     ImGui.EndTabItem();
                 }
 
-                if( ImGui.BeginTabItem( "Icons" + _ID ) ) {
+                if( ImGui.BeginTabItem( Loc.T( "Icons" ) + _ID ) ) {
                     IconManager?.Draw();
                     ImGui.EndTabItem();
                 }
 
-                if( ImGui.BeginTabItem( "Buffs" + _ID ) ) {
+                if( ImGui.BeginTabItem( Loc.T( "Buffs" ) + _ID ) ) {
                     BuffManager?.Draw();
                     ImGui.EndTabItem();
                 }
 
-                if( ImGui.BeginTabItem( "Cooldowns" + _ID ) ) {
+                if( ImGui.BeginTabItem( Loc.T( "Cooldowns" ) + _ID ) ) {
                     CooldownManager?.Draw();
                     ImGui.EndTabItem();
                 }
 
-                if( ImGui.BeginTabItem( "Cursor" + _ID ) ) {
+                if( ImGui.BeginTabItem( Loc.T( "Cursor" ) + _ID ) ) {
                     CursorManager?.Draw();
                     ImGui.EndTabItem();
                 }
 
                 ImGui.EndTabBar();
+
+                ImGui.Separator();
+                ImGui.SetNextItemWidth( 200f );
+                if( ImGui.BeginCombo( Loc.T( "Language" ) + _ID, Loc.Display( Configuration.Language ) ) ) {
+                    foreach( var language in new[] { PluginLanguage.Auto, PluginLanguage.Chinese, PluginLanguage.English } ) {
+                        if( ImGui.Selectable( Loc.Display( language ) + _ID, language == Configuration.Language ) ) {
+                            Configuration.Language = language;
+                            Loc.SetSetting( language );
+                            Configuration.Save();
+                        }
+                    }
+                    ImGui.EndCombo();
+                }
             }
             ImGui.End();
 
@@ -97,9 +110,9 @@ namespace JobBars {
         public static bool DrawCombo<T>( T[] validOptions, T currentValue, string label, string _ID, out T newValue ) {
             newValue = currentValue;
             var ret = false;
-            if( ImGui.BeginCombo( label + _ID, $"{currentValue}" ) ) {
+            if( ImGui.BeginCombo( label + _ID, Loc.Display( currentValue ) ) ) {
                 foreach( var value in validOptions ) {
-                    if( ImGui.Selectable( $"{value}" + _ID, value.Equals( currentValue ) ) ) {
+                    if( ImGui.Selectable( Loc.Display( value ) + _ID, value.Equals( currentValue ) ) ) {
                         ret = true;
                         newValue = value;
                     }

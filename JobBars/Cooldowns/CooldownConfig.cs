@@ -46,29 +46,29 @@ namespace JobBars.Cooldowns {
             using var _ = ImRaii.PushId( $"{_id}{NameId}" );
 
             ImGui.PushStyleColor( ImGuiCol.Text, color );
-            if( ImGui.CollapsingHeader( Name ) ) {
+            if( ImGui.CollapsingHeader( Helper.UiHelper.DisplayName( Name ) ) ) {
                 ImGui.PopStyleColor();
                 ImGui.Indent();
 
                 if( isCustom ) {
-                    if( JobBars.RemoveButton( $"Delete", true ) ) deleteCustom = true;
+                    if( JobBars.RemoveButton( Loc.T( "Delete" ), true ) ) deleteCustom = true;
                 }
 
-                if( JobBars.Configuration.CooldownEnabled.Draw( "Enabled", NameId, Enabled, out var newEnabled ) ) {
+                if( JobBars.Configuration.CooldownEnabled.Draw( Loc.T( "Enabled" ), NameId, Enabled, out var newEnabled ) ) {
                     Enabled = newEnabled;
                     reset = true;
                 }
 
-                if( JobBars.Configuration.CooldownOrder.Draw( "Order", NameId, Order, out var newOrder ) ) {
+                if( JobBars.Configuration.CooldownOrder.Draw( Loc.T( "Order" ), NameId, Order, out var newOrder ) ) {
                     Order = newOrder;
                     reset = true;
                 }
 
-                if( JobBars.Configuration.CooldownShowBorderWhenActive.Draw( "Show border when active", NameId, ShowBorderWhenActive, out var newShowBorderWhenActive ) ) {
+                if( JobBars.Configuration.CooldownShowBorderWhenActive.Draw( Loc.T( "Show border when active" ), NameId, ShowBorderWhenActive, out var newShowBorderWhenActive ) ) {
                     ShowBorderWhenActive = newShowBorderWhenActive;
                 }
 
-                if( JobBars.Configuration.CooldownShowBorderWhenOffCD.Draw( "Show border when off CD", NameId, ShowBorderWhenOffCD, out var newShowBorderWhenOffCD ) ) {
+                if( JobBars.Configuration.CooldownShowBorderWhenOffCD.Draw( Loc.T( "Show border when off CD" ), NameId, ShowBorderWhenOffCD, out var newShowBorderWhenOffCD ) ) {
                     ShowBorderWhenOffCD = newShowBorderWhenOffCD;
                 }
 

@@ -1,11 +1,19 @@
 using JobBars.Nodes.Gauge;
+using System.ComponentModel;
 using System.Numerics;
 
 namespace JobBars.Gauges {
     public enum GaugeVisualType {
+        [Description( "Bar" )]
         Bar,
+
+        [Description( "Arrow" )]
         Arrow,
+
+        [Description( "Diamond" )]
         Diamond,
+
+        [Description( "Bar + Diamond" )]
         BarDiamondCombo
     }
 
@@ -16,9 +24,16 @@ namespace JobBars.Gauges {
     }
 
     public enum GaugeCompleteSoundType {
+        [Description( "When Full" )]
         When_Full,
+
+        [Description( "When Empty" )]
         When_Empty,
+
+        [Description( "When Empty or Full" )]
         When_Empty_or_Full,
+
+        [Description( "Never" )]
         Never
     }
 

@@ -46,16 +46,16 @@ namespace JobBars.Buffs {
             var color = Enabled ? new Vector4( 0, 1, 0, 1 ) : new Vector4( 1, 0, 0, 1 );
 
             ImGui.PushStyleColor( ImGuiCol.Text, color );
-            if( ImGui.CollapsingHeader( $"{Name}{_id}" ) ) {
+            if( ImGui.CollapsingHeader( $"{Helper.UiHelper.DisplayName( Name )}{_id}" ) ) {
                 ImGui.PopStyleColor();
                 ImGui.Indent();
 
-                if( JobBars.Configuration.BuffEnabled.Draw( $"Enabled{_id}{Name}", Name, Enabled, out var newEnabled ) ) {
+                if( JobBars.Configuration.BuffEnabled.Draw( Loc.T( "Enabled" ) + _id + Name, Name, Enabled, out var newEnabled ) ) {
                     Enabled = newEnabled;
                     reset = true;
                 }
 
-                if( JobBars.Configuration.BuffPartyListHighlight.Draw( $"Highlight party members when active{_id}{Name}", Name, PartyListHighlight, out var newPartyListHighlight ) ) {
+                if( JobBars.Configuration.BuffPartyListHighlight.Draw( Loc.T( "Highlight party members when active" ) + _id + Name, Name, PartyListHighlight, out var newPartyListHighlight ) ) {
                     PartyListHighlight = newPartyListHighlight;
                 }
 

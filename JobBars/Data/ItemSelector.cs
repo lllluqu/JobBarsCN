@@ -22,9 +22,8 @@ namespace JobBars.Data {
             Data = new Item( ( ActionIds )0 )
         };
 
-        private string Text = "[NONE]";
+        private string Text = "";
         private string SearchText = "";
-
         private List<ItemData> _Searched = null;
         private List<ItemData> Searched => _Searched ?? Data;
 
@@ -39,14 +38,14 @@ namespace JobBars.Data {
 
         public bool Draw() {
             var ret = false;
-            if( ImGui.BeginCombo( Id, Text, ImGuiComboFlags.HeightLargest ) ) {
+            if( ImGui.BeginCombo( Id, Text.Length == 0 ? Loc.T( "[NONE]" ) : Text, ImGuiComboFlags.HeightLargest ) ) {
                 var resetScroll = false;
-                if( ImGui.InputText( $"Search{Id}", ref SearchText, 100 ) ) {
+                if( ImGui.InputText( Loc.T( "Search" ) + Id, ref SearchText, 100 ) ) {
                     _Searched = SearchText.Length == 0 ? null : Data.Where( x => x.Name.Contains( SearchText, StringComparison.CurrentCultureIgnoreCase ) ).ToList();
                     resetScroll = true;
                 }
 
-                ImGui.BeginChild( $"Select{Id}", new Vector2( ImGui.GetWindowContentRegionMax().X - ImGui.GetWindowContentRegionMin().X, 200 ), true );
+                ImGui.BeginChild( Loc.T( "Select" ) + Id, new Vector2( ImGui.GetWindowContentRegionMax().X - ImGui.GetWindowContentRegionMin().X, 200 ), true );
 
                 DisplayVisible( Searched.Count, out var preItems, out var showItems, out var postItems, out var itemHeight );
                 if( resetScroll ) { ImGui.SetScrollHereY(); }
@@ -77,7 +76,7 @@ namespace JobBars.Data {
                         ImGui.SameLine();
                     }
 
-                    if( ImGui.Button( "Select" + Id ) ) {
+                    if( ImGui.Button( Loc.T( "Select" ) + Id ) ) {
                         Selected = SearchSelected;
                         Text = Selected.Name;
                         ret = true;
@@ -87,7 +86,7 @@ namespace JobBars.Data {
                 ImGui.EndCombo();
             }
             ImGui.SameLine();
-            ImGui.Text( Label );
+            ImGui.Text( Loc.T( Label ) );
 
             return ret;
         }

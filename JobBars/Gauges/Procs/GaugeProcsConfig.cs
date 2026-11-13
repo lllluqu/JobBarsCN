@@ -44,12 +44,12 @@ namespace JobBars.Gauges.Procs {
         public override GaugeTracker GetTracker() => new GaugeProcsTracker( this );
 
         protected override void DrawConfig( string id, ref bool newVisual, ref bool reset ) {
-            if( JobBars.Configuration.GaugeShowText.Draw( $"Show text{id}", Name, ProcsShowText, out var newProcsShowText ) ) {
+            if( JobBars.Configuration.GaugeShowText.Draw( Loc.T( "Show text" ) + id, Name, ProcsShowText, out var newProcsShowText ) ) {
                 ProcsShowText = newProcsShowText;
                 newVisual = true;
             }
 
-            if( JobBars.Configuration.GaugeCompletionSound.Draw( $"Proc sound{id}", Name, ValidSoundType, ProcSound, out var newProcSound ) ) {
+            if( JobBars.Configuration.GaugeCompletionSound.Draw( Loc.T( "Proc sound" ) + id, Name, ValidSoundType, ProcSound, out var newProcSound ) ) {
                 ProcSound = newProcSound;
             }
 
@@ -58,12 +58,12 @@ namespace JobBars.Gauges.Procs {
             foreach( var proc in Procs ) {
                 ImGui.SetCursorPosY( ImGui.GetCursorPosY() + 10 );
 
-                if( JobBars.Configuration.GaugeProcOrder.Draw( $"Order ({proc.Name})", proc.Name, proc.Order, out var newOrder ) ) {
+                if( JobBars.Configuration.GaugeProcOrder.Draw( Loc.T( "Order ({0})", proc.Name ), proc.Name, proc.Order, out var newOrder ) ) {
                     proc.Order = newOrder;
                     reset = true;
                 }
 
-                if( JobBars.Configuration.GaugeProcColor.Draw( $"Color ({proc.Name})", proc.Name, proc.Color, out var newColor ) ) {
+                if( JobBars.Configuration.GaugeProcColor.Draw( Loc.T( "Color ({0})", proc.Name ), proc.Name, proc.Color, out var newColor ) ) {
                     proc.Color = newColor;
                     reset = true;
                 }

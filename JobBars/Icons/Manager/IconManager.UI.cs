@@ -6,13 +6,13 @@ namespace JobBars.Icons.Manager {
         private readonly InfoBox<IconManager> LargeIconInfoBox = new() {
             Label = "Large Text",
             ContentsAction = ( IconManager manager ) => {
-                if( ImGui.Checkbox( "Buff icons" + manager.Id, ref JobBars.Configuration.IconBuffLarge ) ) JobBars.Configuration.Save();
-                if( ImGui.Checkbox( "Timer icons" + manager.Id, ref JobBars.Configuration.IconTimerLarge ) ) JobBars.Configuration.Save();
+                if( ImGui.Checkbox( Loc.T( "Buff icons" ) + manager.Id, ref JobBars.Configuration.IconBuffLarge ) ) JobBars.Configuration.Save();
+                if( ImGui.Checkbox( Loc.T( "Timer icons" ) + manager.Id, ref JobBars.Configuration.IconTimerLarge ) ) JobBars.Configuration.Save();
             }
         };
 
         protected override void DrawHeader() {
-            if( ImGui.Checkbox( "Icon replacement enabled", ref JobBars.Configuration.IconsEnabled ) ) {
+            if( ImGui.Checkbox( Loc.T( "Icon replacement enabled" ), ref JobBars.Configuration.IconsEnabled ) ) {
                 JobBars.Configuration.Save();
                 Reset();
             }

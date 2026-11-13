@@ -118,10 +118,10 @@ namespace JobBars.Data {
 
         private bool DrawCombo( string id, T[] comboOptions, T currentValue, out T value ) {
             value = currentValue;
-            if( ImGui.BeginCombo( id, $"{currentValue}", ImGuiComboFlags.HeightLargest ) ) {
+            if( ImGui.BeginCombo( id, Loc.Display( currentValue ), ImGuiComboFlags.HeightLargest ) ) {
                 if( ShowSearch ) {
                     ImGui.SetNextItemWidth( ImGui.GetWindowContentRegionMax().X - ImGui.GetWindowContentRegionMin().X - 50 );
-                    ImGui.InputText( "Search##Combo", ref SearchInput, 256 );
+                    ImGui.InputText( Loc.T( "Search" ) + "##Combo", ref SearchInput, 256 );
                 }
 
                 if( ShowSearch ) ImGui.BeginChild( "Child##Combo", new Vector2( ImGui.GetWindowContentRegionMax().X - ImGui.GetWindowContentRegionMin().X, 200 ), true );
@@ -129,11 +129,11 @@ namespace JobBars.Data {
                 var idx = 0;
                 foreach( var option in comboOptions ) {
                     if( ShowSearch && !string.IsNullOrEmpty( SearchInput ) ) {
-                        var optionString = option.ToString();
+                        var optionString = Loc.Display( option );
                         if( !optionString.Contains( SearchInput, StringComparison.CurrentCultureIgnoreCase ) ) continue;
                     }
 
-                    if( ImGui.Selectable( $"{option}##Combo{idx}", option.Equals( currentValue ) ) ) {
+                    if( ImGui.Selectable( Loc.Display( option ) + $"##Combo{idx}", option.Equals( currentValue ) ) ) {
                         value = option;
 
                         if( ShowSearch ) ImGui.EndChild();

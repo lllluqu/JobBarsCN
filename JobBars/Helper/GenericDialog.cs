@@ -36,7 +36,7 @@ namespace JobBars {
             if( !Visible ) return;
             ImGui.SetNextWindowSize( Size, ImGuiCond.FirstUseEver );
 
-            if( ImGui.Begin( Name, ref Visible, ( MenuBar ? ImGuiWindowFlags.MenuBar : ImGuiWindowFlags.None ) | ImGuiWindowFlags.NoDocking ) ) {
+            if( ImGui.Begin( Loc.T( Name ), ref Visible, ( MenuBar ? ImGuiWindowFlags.MenuBar : ImGuiWindowFlags.None ) | ImGuiWindowFlags.NoDocking ) ) {
                 DrawBody();
             }
             ImGui.End();

@@ -1,18 +1,38 @@
 using JobBars.Data;
 using JobBars.Helper;
 using System;
+using System.ComponentModel;
 
 namespace JobBars.Cursors {
     public enum CursorType {
+        [Description( "None" )]
         None,
+
+        [Description( "GCD" )]
         GCD,
+
+        [Description( "Cast Time" )]
         CastTime,
+
+        [Description( "MP Tick" )]
         MpTick,
+
+        [Description( "Actor Tick" )]
         ActorTick,
+
+        [Description( "DoT Tick" )]
         DoT_Tick,
+
+        [Description( "Static Circle" )]
         StaticCircle,
+
+        [Description( "Static Ring" )]
         StaticRing,
+
+        [Description( "Status Time" )]
         StatusTime,
+
+        [Description( "Slidecast" )]
         Slidecast
     }
 
@@ -86,28 +106,28 @@ namespace JobBars.Cursors {
         }
 
         public void Draw( string _ID ) {
-            if( JobBars.Configuration.CursorType.Draw( $"Inner type{_ID}", InnerName, ValidCursorType, InnerType, out var newInnerValue ) ) {
+            if( JobBars.Configuration.CursorType.Draw( Loc.T( "Inner type" ) + _ID, InnerName, ValidCursorType, InnerType, out var newInnerValue ) ) {
                 InnerType = newInnerValue;
             }
 
             if( InnerType == CursorType.StatusTime ) {
-                if( JobBars.Configuration.CursorStatus.Draw( $"Inner status{_ID}", InnerName, UiHelper.StatusList, InnerStatus, out var newInnerStatus ) ) {
+                if( JobBars.Configuration.CursorStatus.Draw( Loc.T( "Inner status" ) + _ID, InnerName, UiHelper.StatusList, InnerStatus, out var newInnerStatus ) ) {
                     InnerStatus = newInnerStatus;
                 }
-                if( JobBars.Configuration.CursorStatusDuration.Draw( $"Inner status duration{_ID}", InnerName, InnerStatusDuration, out var newInnerStatusDuration ) ) {
+                if( JobBars.Configuration.CursorStatusDuration.Draw( Loc.T( "Inner status duration" ) + _ID, InnerName, InnerStatusDuration, out var newInnerStatusDuration ) ) {
                     InnerStatusDuration = newInnerStatusDuration;
                 }
             }
 
-            if( JobBars.Configuration.CursorType.Draw( $"Outer type{_ID}", OuterName, ValidCursorType, OuterType, out var newOuterValue ) ) {
+            if( JobBars.Configuration.CursorType.Draw( Loc.T( "Outer type" ) + _ID, OuterName, ValidCursorType, OuterType, out var newOuterValue ) ) {
                 OuterType = newOuterValue;
             }
 
             if( OuterType == CursorType.StatusTime ) {
-                if( JobBars.Configuration.CursorStatus.Draw( $"Outer status{_ID}", OuterName, UiHelper.StatusList, OuterStatus, out var newOuterStatus ) ) {
+                if( JobBars.Configuration.CursorStatus.Draw( Loc.T( "Outer status" ) + _ID, OuterName, UiHelper.StatusList, OuterStatus, out var newOuterStatus ) ) {
                     OuterStatus = newOuterStatus;
                 }
-                if( JobBars.Configuration.CursorStatusDuration.Draw( $"Outer status duration{_ID}", OuterName, OuterStatusDuration, out var newOuterStautsDuration ) ) {
+                if( JobBars.Configuration.CursorStatusDuration.Draw( Loc.T( "Outer status duration" ) + _ID, OuterName, OuterStatusDuration, out var newOuterStautsDuration ) ) {
                     OuterStatusDuration = newOuterStautsDuration;
                 }
             }

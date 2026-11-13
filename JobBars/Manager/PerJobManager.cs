@@ -8,7 +8,7 @@ namespace JobBars.Data {
         protected override void DrawLeftColumn() {
             foreach( var job in JobToValue.Keys ) {
                 if( job == JobIds.OTHER ) continue;
-                if( ImGui.Selectable( UiHelper.Localize( job ) + Id, SelectedJob == job ) ) {
+                if( ImGui.Selectable( UiHelper.JobDisplay( job ) + Id, SelectedJob == job ) ) {
                     SelectedJob = job;
                 }
             }
@@ -16,7 +16,7 @@ namespace JobBars.Data {
 
         protected override void DrawRightColumn() {
             if( SelectedJob == JobIds.OTHER ) {
-                ImGui.Text( "Select a job..." );
+                ImGui.Text( Loc.T( "Select a job..." ) );
             }
             else {
                 ImGui.BeginChild( Id + "Selected" );

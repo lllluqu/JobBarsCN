@@ -77,20 +77,20 @@ namespace JobBars.Gauges.Timer {
 
                 var suffix = string.IsNullOrEmpty( subTimer.SubName ) ? "" : $" ({subTimer.SubName})";
 
-                if( JobBars.Configuration.GaugeColor.Draw( $"Color{suffix}{id}", subTimer.Name, subTimer.Color, out var newColor ) ) {
+                if( JobBars.Configuration.GaugeColor.Draw( Loc.T( "Color" ) + suffix + id, subTimer.Name, subTimer.Color, out var newColor ) ) {
                     subTimer.Color = newColor;
                     newVisual = true;
                 }
 
-                if( JobBars.Configuration.GaugeTimerOffset.Draw( $"Time offset{suffix}{id}", subTimer.Name, subTimer.Offset, out var newOffset ) ) {
+                if( JobBars.Configuration.GaugeTimerOffset.Draw( Loc.T( "Time offset" ) + suffix + id, subTimer.Name, subTimer.Offset, out var newOffset ) ) {
                     subTimer.Offset = newOffset;
                 }
 
-                if( JobBars.Configuration.GaugeInvert.Draw( $"Invert{suffix}{id}", subTimer.Name, subTimer.Invert, out var newInvert ) ) {
+                if( JobBars.Configuration.GaugeInvert.Draw( Loc.T( "Invert" ) + suffix + id, subTimer.Name, subTimer.Invert, out var newInvert ) ) {
                     subTimer.Invert = newInvert;
                 }
 
-                if( JobBars.Configuration.GaugeLowTimerWarning_2.Draw( $"Low warning time{suffix}{id}", subTimer.Name, subTimer.LowWarningTime, out var newLowWarning ) ) {
+                if( JobBars.Configuration.GaugeLowTimerWarning_2.Draw( Loc.T( "Low warning time" ) + suffix + id, subTimer.Name, subTimer.LowWarningTime, out var newLowWarning ) ) {
                     subTimer.LowWarningTime = newLowWarning;
                 }
             }

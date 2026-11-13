@@ -1,9 +1,13 @@
 using JobBars.Atk;
 using System;
+using System.ComponentModel;
 
 namespace JobBars.Gauges.Rolling {
     public enum GaugeGCDRollingType {
+        [Description( "GCD" )]
         GCD,
+
+        [Description( "Cast Time" )]
         CastTime
     }
 
@@ -25,12 +29,12 @@ namespace JobBars.Gauges.Rolling {
         public override GaugeTracker GetTracker() => new GaugeRollingTracker( this );
 
         protected override void DrawConfig( string id, ref bool newVisual, ref bool reset ) {
-            if( JobBars.Configuration.GaugeGCDRolling.Draw( $"Data type{id}", Name, ValidRollingType, RollingType, out var newRollingType ) ) {
+            if( JobBars.Configuration.GaugeGCDRolling.Draw( Loc.T( "Data type" ) + id, Name, ValidRollingType, RollingType, out var newRollingType ) ) {
                 RollingType = newRollingType;
                 newVisual = true;
             }
 
-            if( JobBars.Configuration.GaugeColor.Draw( $"Color{id}", Name, Color, out var newColor ) ) {
+            if( JobBars.Configuration.GaugeColor.Draw( Loc.T( "Color" ) + id, Name, Color, out var newColor ) ) {
                 Color = newColor;
                 newVisual = true;
             }

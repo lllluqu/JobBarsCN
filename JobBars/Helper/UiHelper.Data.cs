@@ -75,6 +75,36 @@ namespace JobBars.Helper {
         private static Dictionary<JobIds, string> JobToString;
         private static Dictionary<Item, string> ItemToString;
 
+        /// <summary>Drops derived lookup tables after the UI language changed.</summary>
+        public static void InvalidateLocalizationCache() {
+            JobNameLookup.Clear();
+        }
+
+        private static readonly Dictionary<JobIds, string> ChineseJobNames = new() {
+            [JobIds.GNB] = "绝枪战士",
+            [JobIds.PLD] = "骑士",
+            [JobIds.WAR] = "战士",
+            [JobIds.DRK] = "暗黑骑士",
+            [JobIds.AST] = "占星术士",
+            [JobIds.SCH] = "学者",
+            [JobIds.WHM] = "白魔法师",
+            [JobIds.SGE] = "贤者",
+            [JobIds.BRD] = "吟游诗人",
+            [JobIds.MCH] = "机工士",
+            [JobIds.DNC] = "舞者",
+            [JobIds.DRG] = "龙骑士",
+            [JobIds.SAM] = "武士",
+            [JobIds.NIN] = "忍者",
+            [JobIds.VPR] = "蝰蛇剑士",
+            [JobIds.MNK] = "武僧",
+            [JobIds.RPR] = "钐镰客",
+            [JobIds.SMN] = "召唤师",
+            [JobIds.BLM] = "黑魔法师",
+            [JobIds.RDM] = "赤魔法师",
+            [JobIds.PCT] = "绘灵法师",
+            [JobIds.BLU] = "青魔法师"
+        };
+
         public static string Localize( JobIds job ) {
             if( JobToString.TryGetValue( job, out var jobString ) ) return jobString;
             else {
@@ -84,6 +114,10 @@ namespace JobBars.Helper {
             }
         }
 
+        /// <summary>
+        /// Suffix appended to proc gauges. Follows the game client language because it becomes part
+        /// of the gauge name, which doubles as the saved configuration key.
+        /// </summary>
         public static string ProcText => Dalamud.ClientState.ClientLanguage switch {
             ClientLanguage.Japanese => "Procs",
             ClientLanguage.English => "Procs",
@@ -91,6 +125,66 @@ namespace JobBars.Helper {
             ClientLanguage.French => "Procs",
             _ => "触发"
         };
+
+        /// <summary>Job name for display, honouring the selected UI language.</summary>
+        public static string JobDisplay( JobIds job ) {
+            if( job == JobIds.OTHER )
+                return Loc.T( "OTHER" );
+
+            if( Loc.IsChinese && ChineseJobNames.TryGetValue( job, out var chinese ) )
+                return chinese;
+
+            return Localize( job );
+        }
+
+        private static readonly Dictionary<string, JobIds> JobNameLookup = new( StringComparer.OrdinalIgnoreCase );
+
+        private static void BuildJobNameLookup() {
+            JobNameLookup.Clear();
+            foreach( var job in ChineseJobNames.Keys ) {
+                JobNameLookup[Localize( job )] = job;
+                JobNameLookup[job.ToString()] = job;
+            }
+        }
+
+        /// <summary>
+        /// Translates a display name for the UI. Names are kept in English internally (they double
+        /// as configuration keys); only the rendered text is localized here.
+        /// </summary>
+        public static string DisplayName( string name ) {
+            if( string.IsNullOrEmpty( name ) ) return name;
+
+            if( JobNameLookup.Count == 0 ) BuildJobNameLookup();
+
+            // "MP (Dark Knight)" / "GCD (Warrior)"
+            var open = name.LastIndexOf( '(' );
+            if( open > 0 && name.EndsWith( ")", StringComparison.Ordinal ) ) {
+                var prefix = name[..open].TrimEnd();
+                var inner = name[( open + 1 )..^1].Trim();
+
+                if( JobNameLookup.TryGetValue( inner, out var innerJob ) )
+                    return $"{Loc.T( prefix )}（{JobDisplay( innerJob )}）";
+            }
+
+            // "Black Mage Procs" — only the English client needs the suffix translated; a CJK
+            // client already produced "黑魔法师 触发".
+            const string procsSuffix = " Procs";
+            if( name.EndsWith( procsSuffix, StringComparison.Ordinal ) ) {
+                var head = name[..^procsSuffix.Length];
+                if( JobNameLookup.TryGetValue( head, out var procJob ) )
+                    return $"{JobDisplay( procJob )} {Loc.T( "Procs" )}";
+            }
+
+            // "Rampart - WAR" (custom cooldown names)
+            const string jobSuffixSeparator = " - ";
+            var separator = name.LastIndexOf( jobSuffixSeparator, StringComparison.Ordinal );
+            if( separator > 0 && JobNameLookup.TryGetValue( name[( separator + jobSuffixSeparator.Length )..], out var tailJob ) ) {
+                var head = name[..separator];
+                return $"{Loc.T( head )} - {JobDisplay( tailJob )}";
+            }
+
+            return Loc.TryGet( name, out var translated ) ? translated : name;
+        }
 
         public static string Localize( ActionIds action ) => Localize( new Item( action ) );
         public static string Localize( BuffIds buff ) => Localize( new Item( buff ) );
@@ -104,20 +198,22 @@ namespace JobBars.Helper {
         }
 
         private static string ConvertJobToString( JobIds job ) {
+            if( job == JobIds.OTHER ) return Loc.T( "OTHER" );
+
             foreach( var classJob in JobSheet ) {
                 if( classJob.RowId == ( uint )job ) return ToTitleCase( classJob.Name.ExtractText() );
             }
-            return "ERROR";
+            return Loc.T( "ERROR" );
         }
 
         private static string ConvertItemToString( Item item ) {
             if( item.Type == ItemType.Buff ) {
                 var buff = StatusSheet.Where( x => x.RowId == item.Id );
-                return !buff.Any() ? "Unknown" : ToTitleCase( buff.First().Name.ExtractText() );
+                return !buff.Any() ? Loc.T( "Unknown" ) : ToTitleCase( buff.First().Name.ExtractText() );
             }
             else {
                 var action = ActionSheet.Where( x => x.RowId == item.Id );
-                return !action.Any() ? "Unknown" : ToTitleCase( action.First().Name.ExtractText() );
+                return !action.Any() ? Loc.T( "Unknown" ) : ToTitleCase( action.First().Name.ExtractText() );
             }
         }
 
