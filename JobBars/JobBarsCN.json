@@ -4,7 +4,7 @@
     "Punchline": "更多职业量谱",
     "Description": "额外的职业量谱、队友增益计时、减伤监控等。图标作者 PAPACHIN。基于 ocealot 的 JobBars 全面汉化。",
     "InternalName": "JobBarsCN",
-    "AssemblyVersion": "1.3.3.3",
+    "AssemblyVersion": "1.3.3.21",
     "Tags": [ "UI", "Bars", "chinese", "汉化" ],
     "RepoUrl": "https://github.com/lllluqu/JobBarsCN",
     "ApplicableVersion": "any",
